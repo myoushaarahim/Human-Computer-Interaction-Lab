@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PlacePredict - AI Placement Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
+  <div class="max-w-2xl mx-auto bg-white shadow-2xl min-h-screen">
+
+    <!-- Header -->
+    <div class="bg-indigo-600 text-white p-6 text-center">
+      <h1 class="text-4xl font-bold flex items-center justify-center gap-3">
+        <i class="fas fa-brain"></i> PlacePredict
+      </h1>
+      <p class="text-indigo-200 mt-1">Know your campus placement chance in seconds</p>
+    </div>
+
+    <!-- SCREEN 1: Home -->
+    <div id="screen1" class="p-8">
+      <div class="text-center py-12">
+        <h2 class="text-5xl font-bold text-gray-800 mb-4">Will You Get Placed?</h2>
+        <p class="text-xl text-gray-600 mb-10">Enter your details → AI predicts instantly</p>
+        <button onclick="goToScreen(2)" 
+                class="bg-indigo-600 hover:bg-indigo-700 text-white text-2xl font-semibold px-12 py-6 rounded-3xl shadow-lg">
+          Start Prediction <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Input Form -->
+    <div id="screen2" class="hidden p-8">
+      <h2 class="text-2xl font-bold mb-6">Enter Your Details</h2>
+      <div class="space-y-6">
+        <input id="cgpa" type="number" step="0.1" placeholder="CGPA (e.g. 8.7)" class="w-full p-4 border rounded-2xl text-lg">
+        <input id="intern" type="number" placeholder="No. of Internships" class="w-full p-4 border rounded-2xl text-lg">
+        <input id="projects" type="number" placeholder="No. of Projects" class="w-full p-4 border rounded-2xl text-lg">
+        <select id="backlogs" class="w-full p-4 border rounded-2xl text-lg">
+          <option value="">Any Backlogs?</option>
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+        <input id="iq" type="number" placeholder="IQ Score" class="w-full p-4 border rounded-2xl text-lg">
+      </div>
+      <button onclick="predict()" 
+              class="mt-10 w-full bg-green-600 hover:bg-green-700 text-white text-2xl font-bold py-6 rounded-3xl">
+        Predict My Placement
+      </button>
+    </div>
+
+    <!-- SCREEN 3: Result -->
+    <div id="screen3" class="hidden p-8 text-center">
+      <div id="resultBox" class="mx-auto w-80 h-80 rounded-3xl flex items-center justify-center text-6xl font-bold shadow-2xl">
+        <!-- JS will fill this -->
+      </div>
+      <p id="confidence" class="text-3xl mt-8 font-semibold"></p>
+      <p id="salary" class="text-xl mt-4 text-gray-600"></p>
+      
+      <div class="mt-12 flex gap-4">
+        <button onclick="goToScreen(2)" class="flex-1 py-5 border-2 border-gray-300 rounded-3xl text-lg">Try Again</button>
+        <button onclick="alert('Result saved to your profile!')" class="flex-1 py-5 bg-indigo-600 text-white rounded-3xl text-lg">Save Result</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goToScreen(n) {
+      document.querySelectorAll('div[id^="screen"]').forEach(s => s.classList.add('hidden'));
+      document.getElementById('screen'+n).classList.remove('hidden');
+    }
+
+    function predict() {
+      const cgpa = parseFloat(document.getElementById('cgpa').value) || 7;
+      const intern = parseInt(document.getElementById('intern').value) || 0;
+      
+      // Simple ML simulation (in real app this would call a model)
+      const score = (cgpa * 10) + (intern * 8);
+      const placed = score > 75;
+      
+      const box = document.getElementById('resultBox');
+      const conf = document.getElementById('confidence');
+      const sal = document.getElementById('salary');
+      
+      if (placed) {
+        box.innerHTML = `🎉<br>PLACED`;
+        box.style.backgroundColor = '#22c55e';
+        box.style.color = 'white';
+        conf.textContent = Math.floor(75 + Math.random()*20) + "% Confidence";
+        sal.textContent = "Estimated Salary: Rs6.5 - 9 LPA";
+      } else {
+        box.innerHTML = `😔<br>NOT PLACED`;
+        box.style.backgroundColor = '#ef4444';
+        box.style.color = 'white';
+        conf.textContent = Math.floor(60 + Math.random()*20) + "% Confidence";
+        sal.textContent = "Work on skills to improve";
+      }
+      
+      goToScreen(3);
+    }
+  </script>
+</body>
+</html>
