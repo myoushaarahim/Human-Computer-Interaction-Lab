@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evently | UET Mardan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .event-card { transition: all 0.3s; }
+    .event-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-[#1E40AF] text-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-calendar-alt text-3xl"></i>
+        <h1 class="text-3xl font-bold">Evently</h1>
+      </div>
+      <nav class="hidden md:flex gap-8 text-lg">
+        <a href="#" class="hover:text-[#10B981]">Home</a>
+        <a href="#" class="hover:text-[#10B981]">Events</a>
+        <a href="#" class="hover:text-[#10B981]">My Events</a>
+        <a href="#" class="hover:text-[#10B981]">Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-[#1E40AF] to-[#10B981] text-white py-20">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <h2 class="text-5xl font-bold mb-4">Discover Campus Events</h2>
+      <p class="text-2xl mb-10">Register in one click • Stay updated with UET Mardan</p>
+      <input type="text" id="search" placeholder="Search events..." 
+             class="w-full max-w-md px-6 py-4 rounded-3xl text-black text-lg focus:outline-none">
+    </div>
+  </section>
+
+  <!-- Upcoming Events -->
+  <section class="max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-8">Upcoming Events</h2>
+    <div class="grid md:grid-cols-3 gap-8" id="events">
+      <!-- Cards added by JS -->
+    </div>
+  </section>
+
+  <!-- Event Detail Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
+      <div class="p-6 border-b flex justify-between">
+        <h3 id="modal-title" class="text-2xl font-bold"></h3>
+        <button onclick="closeModal()" class="text-4xl text-gray-400">×</button>
+      </div>
+      <div class="p-8">
+        <img id="modal-img" class="w-full rounded-2xl mb-6" alt="">
+        <p id="modal-desc" class="text-gray-700"></p>
+        <div class="mt-6 flex items-center gap-6 text-sm">
+          <div><i class="fas fa-calendar"></i> <span id="modal-date"></span></div>
+          <div><i class="fas fa-map-marker-alt"></i> <span id="modal-venue"></span></div>
+        </div>
+      </div>
+      <div class="p-6 border-t">
+        <button onclick="registerEvent()" 
+                class="w-full bg-[#10B981] text-white py-5 rounded-3xl text-xl font-semibold">Register Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const events = [
+      {id:1, title:"AI Seminar", date:"March 15, 2026", venue:"Auditorium", img:"https://picsum.photos/id/201/600/400", desc:"Learn latest trends in Artificial Intelligence with industry experts."},
+      {id:2, title:"Sports Gala", date:"March 20, 2026", venue:"Sports Ground", img:"https://picsum.photos/id/237/600/400", desc:"Annual inter-department sports competition."},
+      {id:3, title:"Career Workshop", date:"March 25, 2026", venue:"Seminar Hall", img:"https://picsum.photos/id/180/600/400", desc:"Resume building and interview preparation session."}
+    ];
+
+    function renderEvents() {
+      const container = document.getElementById('events');
+      container.innerHTML = '';
+      events.forEach(e => {
+        const card = document.createElement('div');
+        card.className = 'event-card bg-white rounded-3xl overflow-hidden cursor-pointer';
+        card.innerHTML = `
+          <img src="${e.img}" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="font-bold text-xl">${e.title}</h3>
+            <p class="text-sm text-gray-500 mt-2">${e.date} • ${e.venue}</p>
+          </div>
+        `;
+        card.onclick = () => showModal(e);
+        container.appendChild(card);
+      });
+    }
+
+    function showModal(event) {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal-title').textContent = event.title;
+      document.getElementById('modal-img').src = event.img;
+      document.getElementById('modal-desc').textContent = event.desc;
+      document.getElementById('modal-date').textContent = event.date;
+      document.getElementById('modal-venue').textContent = event.venue;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    function registerEvent() {
+      alert("✅ Registration Successful! You will receive a confirmation email.");
+      closeModal();
+    }
+
+    renderEvents();
+  </script>
+</body>
+</html>
